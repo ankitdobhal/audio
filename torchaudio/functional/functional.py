@@ -926,8 +926,7 @@ def sliding_window_cmn(
         if window_end > num_frames:
             window_start -= (window_end - num_frames)
             window_end = num_frames
-            if window_start < 0:
-                window_start = 0
+            window_start = max(window_start, 0)
         if last_window_start == -1:
             input_part = waveform[:, window_start: window_end - window_start, :]
             cur_sum += torch.sum(input_part, 1)
