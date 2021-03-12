@@ -591,7 +591,7 @@ def mask_along_axis_iid(
         Tensor: Masked spectrograms of dimensions (batch, channel, freq, time)
     """
 
-    if axis != 2 and axis != 3:
+    if axis not in (2, 3):
         raise ValueError('Only Frequency and Time masking are supported')
 
     device = specgrams.device
@@ -926,8 +926,7 @@ def sliding_window_cmn(
         if window_end > num_frames:
             window_start -= (window_end - num_frames)
             window_end = num_frames
-            if window_start < 0:
-                window_start = 0
+            window_start = max(window_start, 0)
         if last_window_start == -1:
             input_part = waveform[:, window_start: window_end - window_start, :]
             cur_sum += torch.sum(input_part, 1)
